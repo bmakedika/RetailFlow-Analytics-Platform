@@ -17,17 +17,33 @@ job_config = bigquery.LoadJobConfig(
     write_disposition="WRITE_TRUNCATE"
 ) 
 
+error_tables = []
+
 for table, file_name in data_src.items():
     print(f"Traitement en cours {table}...")
 
-    file_path = f"data/raw/{file_name}"
-    df = pd.read_csv(file_path)
+    try:
+        file_path = f"data/raw/{file_name}"
+        df = pd.read_csv(file_path)
 
-    table_id = f"{project_id}.{dataset}.{table}"
+        table_id = f"{project_id}.{dataset}.{table}"
 
-    job = client.load_table_from_dataframe(df, table_id, job_config=job_config)
-    job.result()
+        job = client.load_table_from_dataframe(df, table_id, job_config=job_config)
+        job.result()
 
-    print(f"{table} chargement réussi")
+        print(f"{table} chargement réussi\n")
     
-print("Toutes les tables sont chargées !")
+    except Exception as e:
+        print(f"Erreur lors du chargement de {table}: {str(e)}\n")
+        error_tables.append((table, str(e)))
+        continue
+
+print("\nPipeline d'exécution terminée")
+
+if error_tables:
+    print("\nErreurs détectées:")
+    for table, error in error_tables:
+        print(f" - {table}: {error}")
+    
+else:
+    print("Toutes les tables ont été chargées avec succès !")
