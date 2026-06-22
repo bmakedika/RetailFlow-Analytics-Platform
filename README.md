@@ -1,6 +1,6 @@
 # RetailFlow Analytics Platform
 
-Plateforme data e-commerce qui ingère, transforme et expose des indicateurs métier à partir de données brutes — pipeline GCP, modélisation DBT et dashboard Streamlit.
+Plateforme data e-commerce qui ingère, transforme et expose des indicateurs métier à partir de données brutes : pipeline GCP, modélisation DBT et dashboard Streamlit.
 
 ---
 
@@ -71,7 +71,7 @@ Ingestion Python  ──────────────►  BigQuery (raw)
 
 ```bash
 git clone <url-du-repo>
-cd retailflow
+cd RetailFlow-Analytics-Platform
 ```
 
 ### 2. Configurer les credentials GCP
@@ -109,7 +109,7 @@ dbt test
 ## Structure du projet
 
 ```text
-retailflow/
+RetailFlow-Analytics-Platform/
 ├── data/
 │   └── raw/                                       # fichiers CSV bruts
 ├── ingestion/
