@@ -1,15 +1,12 @@
 # RetailFlow Analytics Platform
 
-
-## Aperçu
-
-La plateforme RetailFlow Analytics est un projet de data engineering clé en main conçu pour simuler une pile de données moderne pour l'analyse du e-commerce.
+Plateforme data e-commerce qui ingère, transforme et expose des indicateurs métier à partir de données brutes — pipeline GCP, modélisation DBT et dashboard Streamlit.
 
 ---
 
 ## Contexte & Objectif
 
-Les entreprises e-commerce génèrent de grandes quantités de données (commandes, clients, produits), mais ces données restent souvent difficilement exploitables faute d'infrastructure analytique adaptée. Ce projet s'appuie sur le dataset public **Olist**, représentatif d'une activité e-commerce réelle, pour simuler un contexte professionnel.
+Les entreprises e-commerce génèrent de grandes quantités de données (commandes, clients, produits), mais ces données restent souvent difficilement exploitables faute d'infrastructure analytique adaptée. Ce projet s'appuie sur le dataset public du magasin **Olist**, représentatif d'une activité e-commerce réelle, pour simuler un contexte professionnel.
 
 L'objectif : construire une plateforme data moderne permettant de
 
@@ -22,7 +19,7 @@ L'objectif : construire une plateforme data moderne permettant de
 
 ## Architecture
 
-```
+```text
 CSV (Olist)
     │
     ▼
@@ -39,54 +36,33 @@ Ingestion Python  ──────────────►  BigQuery (raw)
 
 ## Stack technique
 
-| Outil | Rôle |
-|---|---|
-| Python | Scripts d'ingestion |
-| BigQuery | Entrepôt de données |
-| DBT | Modélisation et tests de qualité des données |
-| Streamlit | Dashboard de visualisation |
-| Docker / Docker Compose | Conteneurisation et orchestration des services |
-| GitHub Actions | CI/CD |
+| Outil                   | Rôle                                          |
+|-------------------------|-----------------------------------------------|
+| Python                  | Scripts d'ingestion                           |
+| BigQuery                | Entrepôt de données                           |
+| DBT                     | Modélisation et tests de qualité des données  |
+| Streamlit               | Dashboard de visualisation                    |
+| Docker / Docker Compose | Conteneurisation et orchestration des services|
+| GitHub Actions          | CI/CD                                         |
 
 ---
 
-## Structure du projet
+## Avancement & Roadmap
 
-```text
-retailflow/
-├── data/
-│   └── raw/                                       # fichiers CSV bruts
-├── ingestion/
-│   └── load_to_bigquery.py                        # pipeline ingestion v1
-├── docs/
-│   └── RetailFlow_Analytics_Platform_Backlog.pdf  # backlog agile
-├── dbt_project/                                    # transformation (à venir)
-├── streamlit_app/                                  # dashboard (à venir)
-├── requirements.txt
-└── README.md
-```
----
-
-```md
-## Dataset
-
-- Olist Brazilian E-Commerce Public Dataset
-- Contient : commandes, clients, produits, paiements
-
----
-
-## Gestion de projet
-
-Projet structuré selon une approche Agile :
-- backlog produit défini
-- user stories techniques et métier
-- progression par versions (v1 → v2 → v3)
+| Composant | État |
+| --- | --- |
+| Ingestion CSV → BigQuery (Python) | ✅ Fonctionnel |
+| Modélisation DBT (staging → marts) + tests qualité | 🔜 À venir |
+| Dashboard Streamlit | 🔜 À venir |
+| Conteneurisation Docker Compose complète | 🔜 À venir |
+| CI/CD GitHub Actions | 🔜 À venir |
 
 ---
 
 ## Installation & Utilisation
 
 ### Prérequis
+
 - Docker et Docker Compose installés
 - Un projet GCP avec BigQuery activé
 - Une clé de service account GCP au format JSON
@@ -100,7 +76,7 @@ cd retailflow
 
 ### 2. Configurer les credentials GCP
 
-Placer votre clé de service account quelque part en local (hors du repo, par exemple `~/.gcp/retailflow-sa.json`), puis exporter la variable d'environnement :
+Placer votre clé de service account en local (hors du repo, par exemple `~/.gcp/retailflow-sa.json`), puis exporter la variable d'environnement :
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="/chemin/vers/votre-cle.json"
@@ -112,9 +88,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="/chemin/vers/votre-cle.json"
 docker compose up --build
 ```
 
-Cette commande démarre les services du pipeline (ingestion, transformation DBT, dashboard Streamlit) tels que définis dans `docker-compose.yml`.
-
-> **Note sur l'avancement actuel** : `dbt_project/` et `streamlit_app/` sont encore en cours de développement (voir [Avancement & Roadmap](#avancement--roadmap)). Aujourd'hui, seul le service d'ingestion est pleinement fonctionnel ; les autres services seront activés dans `docker-compose.yml` au fur et à mesure de leur implémentation.
+> **État actuel** : seul le service d'ingestion est pleinement fonctionnel. Les services DBT et Streamlit seront activés dans `docker-compose.yml` au fur et à mesure de leur implémentation.
 
 ### 4. Lancer l'ingestion manuellement (hors Docker)
 
@@ -129,22 +103,28 @@ python ingestion/load_to_bigquery.py
 cd dbt_project
 dbt test
 ```
----
-
-## Avancement & Roadmap
-
-- ✅ Ingestion de données CSV vers BigQuery avec Python
-- 🔜 Modélisation DBT (staging → marts) et tests de qualité associés
-- 🔜 Dashboard Streamlit
-- 🔜 Conteneurisation complète avec Docker Compose (ingestion + DBT + Streamlit)
-- 🔜 CI/CD avec GitHub Actions
 
 ---
 
-# Valeur du projet
+## Structure du projet
 
-Ce projet démontre :
-- la construction de pipelines data
-- l’utilisation du cloud (GCP)
-- la modélisation analytique
-- la mise en place d’une architecture moderne
+```text
+retailflow/
+├── data/
+│   └── raw/                                       # fichiers CSV bruts
+├── ingestion/
+│   └── load_to_bigquery.py                        # pipeline ingestion v1
+├── docs/
+│   └── RetailFlow_Analytics_Platform_Backlog.pdf  # backlog agile
+├── dbt_project/                                   # transformation (à venir)
+├── streamlit_app/                                 # dashboard (à venir)
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Dataset & Documentation
+
+- **Source des données** : [Olist Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+- **Backlog produit** : [`docs/RetailFlow_Analytics_Platform_Backlog.pdf`](docs/RetailFlow_Analytics_Platform_Backlog.pdf)
