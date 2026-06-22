@@ -1,48 +1,37 @@
-import pandas as pd
 from google.cloud import bigquery
+from ingestion.config import PROJECT_ID, DATASET, DATA_SOURCES
+from ingestion.pipeline import process_table
+from google.cloud.bigquery import LoadJobConfig
 
 client = bigquery.Client()
-
-data_src = {
-    "orders": "olist_orders_dataset.csv",
-    "customers": "olist_customers_dataset.csv",
-    "products": "olist_products_dataset.csv",
-    "order_items": "olist_order_items_dataset.csv"
-}
-
-project_id = "retailflow-analytics"
-dataset = "ecommerce_raw"
 
 job_config = bigquery.LoadJobConfig(
     write_disposition="WRITE_TRUNCATE"
 ) 
 
-error_tables = []
+errors = []
 
-for table, file_name in data_src.items():
-    print(f"Traitement en cours {table}...")
+print("Démarrage du pipeline d'ingestion...\n")
 
-    try:
-        file_path = f"data/raw/{file_name}"
-        df = pd.read_csv(file_path)
+for table, file_name in DATA_SOURCES.items():
 
-        table_id = f"{project_id}.{dataset}.{table}"
+    error = process_table(
+        client,
+        PROJECT_ID,
+        DATASET,
+        table,
+        file_name,
+        job_config
+    )
 
-        job = client.load_table_from_dataframe(df, table_id, job_config=job_config)
-        job.result()
+    if error:
+        errors.append(error)
 
-        print(f"{table} chargement réussi\n")
-    
-    except Exception as e:
-        print(f"Erreur lors du chargement de {table}: {str(e)}\n")
-        error_tables.append((table, str(e)))
-        continue
+print("\nExécution du pipeline terminée")
 
-print("\nPipeline d'exécution terminée")
-
-if error_tables:
+if errors:
     print("\nErreurs détectées:")
-    for table, error in error_tables:
+    for table, error in errors:
         print(f" - {table}: {error}")
     
 else:
