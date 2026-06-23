@@ -1,7 +1,11 @@
 from google.cloud import bigquery
+from google.cloud.bigquery import LoadJobConfig
+
 from ingestion.config import PROJECT_ID, DATASET, DATA_SOURCES
 from ingestion.pipeline import process_table
-from google.cloud.bigquery import LoadJobConfig
+from ingestion.logger import setup_logger
+
+logger = setup_logger()
 
 client = bigquery.Client()
 
@@ -11,7 +15,7 @@ job_config = bigquery.LoadJobConfig(
 
 errors = []
 
-print("Démarrage du pipeline d'ingestion...\n")
+logger.info("Démarrage du pipeline d'ingestion...\n")
 
 for table, file_name in DATA_SOURCES.items():
 
@@ -21,18 +25,19 @@ for table, file_name in DATA_SOURCES.items():
         DATASET,
         table,
         file_name,
-        job_config
+        job_config,
+        logger
     )
 
     if error:
         errors.append(error)
 
-print("\nExécution du pipeline terminée")
+logger.info("Exécution du pipeline terminée")
 
 if errors:
-    print("\nErreurs détectées:")
+    logger.warning("Erreurs détectées:")
     for table, error in errors:
-        print(f" - {table}: {error}")
+        logger.warning(f" - {table}: {error}")
     
 else:
-    print("Toutes les tables ont été chargées avec succès !")
+    logger.info("Toutes les tables ont été chargées avec succès !")
