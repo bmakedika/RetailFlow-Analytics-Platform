@@ -1,7 +1,10 @@
-# configuration du pipeline
+import os
+from dotenv import load_dotenv
 
-PROJECT_ID = "retailflow-analytics"
-DATASET = "ecommerce_raw"
+load_dotenv()
+
+PROJECT_ID = os.getenv("GCP_PROJECT_ID")
+DATASET = os.getenv("DATASET")
 
 DATA_SOURCES = {
     "orders": "olist_orders_dataset.csv",
