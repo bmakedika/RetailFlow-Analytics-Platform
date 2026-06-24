@@ -1,5 +1,20 @@
-venv/
-keys/
-__pycache__/
-notebooks/
+# secrets
 .env
+
+# credentials
+keys/
+*.json
+
+# dbt logs
+logs/
+
+# python cache
+__pycache__/
+*.pyc
+
+# virtual env
+venv/
+
+# dbt build artifacts
+target/
+dbt_packages/
