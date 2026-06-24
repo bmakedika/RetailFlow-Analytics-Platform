@@ -16,5 +16,12 @@ __pycache__/
 venv/
 
 # dbt build artifacts
+dbt_project/target/
+dbt_project/logs/
+dbt_project/dbt_packages/
+
 target/
 dbt_packages/
+
+# backup file
+dbt_project/dbt_project.yml.save
