@@ -1,4 +1,4 @@
-![CI](https://github.com/ton-repo/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg)
 
 # RetailFlow Analytics Platform
 
