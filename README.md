@@ -1,3 +1,5 @@
+![CI](https://github.com/ton-repo/actions/workflows/ci.yml/badge.svg)
+
 # RetailFlow Analytics Platform
 
 Plateforme data e-commerce qui ingère, transforme et expose des indicateurs métier à partir de données brutes : pipeline GCP, modélisation DBT et dashboard Streamlit.
