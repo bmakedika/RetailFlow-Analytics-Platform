@@ -13,3 +13,23 @@ models:
       - name: customer_id
         tests:
           - not_null
+
+
+  - name: stg_customers
+    description: "Cleaned customers table"
+
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+
+  - name: stg_products
+    description: "Cleaned products table"
+
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
