@@ -33,3 +33,10 @@ models:
         tests:
           - not_null
           - unique
+
+
+  - name: fct_orders
+    columns:
+      - name: order_date
+        tests:
+          - not_null
