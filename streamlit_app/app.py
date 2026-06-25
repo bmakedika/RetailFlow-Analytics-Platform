@@ -41,7 +41,6 @@ SELECT
 FROM `retailflow-analytics.ecommerce_staging.dim_customers`
 """
 
-
 df_customers = client.query(query_customers).to_dataframe()
 
 st.metric("Total Customers", df_customers["total_customers"][0])
