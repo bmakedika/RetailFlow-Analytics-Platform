@@ -1,6 +1,6 @@
 SELECT
     customer_id,
-    unique_id,
+    customer_unique_id,
     city,
     state
 
