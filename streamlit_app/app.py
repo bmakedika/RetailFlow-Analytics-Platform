@@ -1,16 +1,21 @@
+# imports
+
 import streamlit as st
 import pandas as pd
 import os
 import datetime
-from google.cloud import bigquery
 from dotenv import load_dotenv
+from streamlit_app.bigquery_client import run_query
 
+# config
 
 load_dotenv()
 
-client = bigquery.Client()
+# UI header
 
 st.title("Retailflow Dashboard")
+
+# Sidebar filters
 
 st.sidebar.header("Filters")
 
@@ -23,6 +28,7 @@ if not start_date:
 if not end_date:
     end_date = datetime.date.today()
 
+# Querying data from BigQuery
 
 query_kpi = f"""
 SELECT
@@ -32,51 +38,11 @@ FROM `retailflow-analytics.ecommerce_staging.fct_orders`
 WHERE order_date BETWEEN '{start_date}' AND '{end_date}'
 """
 
-df_kpi = client.query(query_kpi).to_dataframe()
-
-
 query_customers = f"""
 SELECT
     COUNT(DISTINCT customer_unique_id) AS total_customers
 FROM `retailflow-analytics.ecommerce_staging.dim_customers`
 """
-
-df_customers = client.query(query_customers).to_dataframe()
-
-
-query_kpi = f"""
-SELECT
-    SUM(total_orders) AS total_orders,
-    SUM(total_revenue) AS total_revenue,
-FROM `retailflow-analytics.ecommerce_staging.fct_orders`
-WHERE order_date BETWEEN '{start_date}' AND '{end_date}'
-"""
-
-df_kpi = client.query(query_kpi).to_dataframe()
-
-
-query_customers = f"""
-SELECT
-    COUNT(DISTINCT customer_unique_id) AS total_customers
-FROM `retailflow-analytics.ecommerce_staging.dim_customers`
-"""
-
-df_customers = client.query(query_customers).to_dataframe()
-
-
-
-total_orders = int(df_kpi["total_orders"].fillna(0).iloc[0])
-total_customers = int(df_customers["total_customers"].fillna(0).iloc[0])
-total_revenue = round(float(df_kpi["total_revenue"].fillna(0).iloc[0]), 2)
-
-
-
-col1, col2, col3 = st.columns(3)
-
-col1.metric("Orders", int(total_orders))
-col2.metric("Customers", int(total_customers))
-col3.metric("Revenue", round(total_revenue, 2))
-
 
 query_time = f"""
 SELECT
@@ -88,9 +54,27 @@ WHERE order_date BETWEEN '{start_date}' AND '{end_date}'
 ORDER BY order_date
 """
 
-df_time = client.query(query_time).to_dataframe()
+# Data extraction
 
+df_kpi = run_query(query_kpi)
+df_customers = run_query(query_customers)
+df_time = run_query(query_time)
 
+# KPI calculation
+
+total_orders = int(df_kpi["total_orders"].fillna(0).iloc[0])
+total_customers = int(df_customers["total_customers"].fillna(0).iloc[0])
+total_revenue = round(float(df_kpi["total_revenue"].fillna(0).iloc[0]), 2)
+
+# UI display
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("Orders", total_orders)
+col2.metric("Customers", total_customers)
+col3.metric("Revenue", total_revenue)
+
+# Time series chart
 
 st.markdown("### Orders & Revenue Over Time")
 
