@@ -3,22 +3,16 @@
 [![CI](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml)
 
 
-Plateforme data e-commerce permettant de transformer des données brutes en indicateurs métier exploitables — via un pipeline ELT moderne sur GCP.
-
----
-
 ## Présentation
 
-RetailFlow Analytics Platform ingère, transforme et visualise des données e-commerce afin de produire des KPI actionnables pour les équipes métier.
+RetailFlow Analytics Platform est une plateforme data complète permettant d'ingérer, transformer et analyser des données e-commerce afin de produire des indicateurs métier exploitables.
 
-Le projet suit une architecture **ELT** (Extract → Load → Transform) :
+Le projet suit une architecture moderne de type ELT :
 
-| Étape | Outil |
-|---|---|
-| Ingestion | Python → BigQuery |
-| Transformation | DBT (staging & marts) |
-| Visualisation | Streamlit |
-| Orchestration | Docker |
+- **Ingestion** : Python → BigQuery
+- **Transformation** : DBT (staging & marts)
+- **Visualisation** : Streamlit
+- **Orchestration & Déploiement** : Docker
 
 ---
 
@@ -29,91 +23,117 @@ CSV (Olist)
     ↓
 Ingestion Python
     ↓
-BigQuery (raw)        ← données brutes
+BigQuery (raw)
     ↓
-DBT (staging)         ← nettoyage & typage
+DBT (staging)
     ↓
-DBT (marts)           ← modélisation métier
+DBT (marts)
     ↓
-Streamlit Dashboard   ← visualisation KPI
+Streamlit Dashboard
 ```
 
 ---
 
 ## Stack technique
 
-| Outil | Rôle |
-|---|---|
-| Python 3.12 | Ingestion et scripts |
-| BigQuery (GCP) | Entrepôt de données |
-| DBT Core | Transformation & tests qualité |
-| Streamlit | Dashboard interactif |
-| Docker & Docker Compose | Conteneurisation |
-| GitHub Actions | CI/CD |
+- Python 3.12
+- BigQuery (GCP)
+- DBT Core
+- Streamlit
+- Docker & Docker Compose
+- GitHub Actions (CI/CD)
+
+---
+
+## Arborescence du projet
+
+```
+RetailFlow-Analytics-Platform/
+├── data/
+│   └── raw/                    
+├── ingestion/
+│   └── load_to_bigquery.py     
+├── dbt_project/
+│   └── models/
+│        └── staging/
+│        └── marts/
+├── tests/
+│   └── test_ingestion.py
+├── streamlit_app/  
+│   └── app.py
+│   └── bigquery_client.py
+│   └── Dockerfile
+├── docs/
+│   └── RetailFlow_Analytics_Platform_Backlog.pdf
+├── .github/
+│   └── workflow
+│       └── ci.yml              
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+```
 
 ---
 
 ## Pipeline de données
 
-### 1. Ingestion
+### Ingestion
 
-- Chargement automatisé des fichiers CSV vers BigQuery
-- Gestion des erreurs et logs structurés
+- Chargement automatisé des fichiers CSV
+- Gestion des erreurs et logs
 - Pipeline modulaire et scalable
 
-### 2. Transformation (DBT)
+### Transformation (DBT)
 
-- **Staging** : nettoyage et correction des types
-- **Marts** : modélisation orientée métier
+- Nettoyage des données (staging)
+- Modélisation en tables métiers :
+  - `fct_orders`
+  - `dim_customers`
+  - `dim_products`
 
-Tables produites :
+### KPI métier
 
-| Table | Description |
-|---|---|
-| `fct_orders` | Faits commandes |
-| `dim_customers` | Dimension clients |
-| `dim_products` | Dimension produits |
-
-### 3. KPI métier
-
-| KPI | Description |
-|---|---|
-| Chiffre d'affaires (CA) | Revenu total généré |
-| Nombre de commandes | Volume d'activité |
-| Nombre de clients | Base clients active |
+- Chiffre d'affaires (CA)
+- Nombre de commandes
+- Nombre de clients
 
 ---
 
 ## Dashboard
 
-Dashboard Streamlit connecté à BigQuery :
+Fonctionnalités :
 
-- Filtres interactifs par période
-- Visualisation temporelle des KPI
-- Métriques clés : CA, commandes, clients actifs
+- Filtres interactifs par date
+- KPI : commandes, clients, CA
+- Visualisation temporelle
+- Dashboard connecté à BigQuery
 
 ---
 
-## Insights métier
+## Insights business
 
 - Analyse de la croissance du chiffre d'affaires
 - Identification des tendances de ventes
-- Évolution du nombre de clients actifs
-- Base analytique pour la segmentation produit et client
+- Évolution du nombre de clients
+- Base pour analyse des produits et segmentation
 
 ---
 
-## Installation & Utilisation
+## Lancer avec Docker
 
-### Prérequis
+```bash
+docker compose up --build
+```
 
-- Docker et Docker Compose installés
-- Un projet GCP avec BigQuery activé
-- Une clé de service account GCP au format JSON
+Accès :
+
+```
+http://localhost:8501
+```
 
 ### Variables d'environnement
 
-Créer un fichier `.env` à la racine :
+Créer un fichier `.env` :
 
 ```env
 GCP_PROJECT_ID=your_project_id
@@ -121,30 +141,11 @@ DATASET=ecommerce_staging
 GOOGLE_APPLICATION_CREDENTIALS=/chemin/vers/votre-cle.json
 ```
 
-### Lancer avec Docker
-
-```bash
-docker compose up --build
-```
-
-Accès au dashboard :
-
-```
-http://localhost:8501
-```
-
-### Lancer en local (sans Docker)
-
-```bash
-pip install -r requirements.txt
-streamlit run streamlit_app/app.py
-```
-
 ---
 
 ## CI/CD
 
-- Tests automatisés à chaque push
+- Tests automatisés
 - Pipeline GitHub Actions
 - Badge CI dans le README
 
@@ -164,16 +165,16 @@ streamlit run streamlit_app/app.py
 
 ## Conclusion
 
-Ce projet démontre comment des données e-commerce brutes peuvent être transformées en indicateurs métier actionnables grâce à des outils modernes de data engineering.
+Ce projet démontre la capacité à construire une plateforme data complète allant de l'ingestion des données jusqu'à leur visualisation avec une approche orientée métier.
 
 ---
 
-## Licence
+## License
 
-MIT — voir [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE)
 
 ---
 
 ## Auteur
 
-**Bienvenu MAKEDIKA MAKUALA**
+Bienvenu MAKEDIKA MAKUALA
