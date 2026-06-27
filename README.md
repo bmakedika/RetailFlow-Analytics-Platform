@@ -141,6 +141,13 @@ DATASET=ecommerce_staging
 GOOGLE_APPLICATION_CREDENTIALS=/chemin/vers/votre-cle.json
 ```
 
+### Lancer en local (sans Docker)
+
+```bash
+pip install -r requirements.txt
+streamlit run streamlit_app/app.py
+```
+
 ---
 
 ## CI/CD
