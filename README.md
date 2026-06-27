@@ -1,5 +1,7 @@
 # RetailFlow Analytics Platform
 
+https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml)
+
 Plateforme data e-commerce permettant de transformer des données brutes en indicateurs métier exploitables — via un pipeline ELT moderne sur GCP.
 
 ---
