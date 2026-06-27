@@ -1,63 +1,102 @@
-![CI](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg)
-
 # RetailFlow Analytics Platform
 
-Plateforme data e-commerce qui ingère, transforme et expose des indicateurs métier à partir de données brutes : pipeline GCP, modélisation DBT et dashboard Streamlit.
+Plateforme data e-commerce permettant de transformer des données brutes en indicateurs métier exploitables — via un pipeline ELT moderne sur GCP.
 
 ---
 
-## Contexte & Objectif
+## Présentation
 
-Les entreprises e-commerce génèrent de grandes quantités de données (commandes, clients, produits), mais ces données restent souvent difficilement exploitables faute d'infrastructure analytique adaptée. Ce projet s'appuie sur le dataset public du magasin **Olist**, représentatif d'une activité e-commerce réelle, pour simuler un contexte professionnel.
+RetailFlow Analytics Platform ingère, transforme et visualise des données e-commerce afin de produire des KPI actionnables pour les équipes métier.
 
-L'objectif : construire une plateforme data moderne permettant de
+Le projet suit une architecture **ELT** (Extract → Load → Transform) :
 
-- ingérer automatiquement les données e-commerce,
-- structurer et transformer ces données,
-- produire des indicateurs analytiques fiables,
-- exposer ces indicateurs via une interface utilisateur.
+| Étape | Outil |
+|---|---|
+| Ingestion | Python → BigQuery |
+| Transformation | DBT (staging & marts) |
+| Visualisation | Streamlit |
+| Orchestration | Docker |
 
 ---
 
 ## Architecture
 
-```text
+```
 CSV (Olist)
-    │
-    ▼
-Ingestion Python  ──────────────►  BigQuery (raw)
-                                         │
-                                         ▼
-                                  DBT (staging → marts)
-                                         │
-                                         ▼
-                                  Streamlit (dashboard)
+    ↓
+Ingestion Python
+    ↓
+BigQuery (raw)        ← données brutes
+    ↓
+DBT (staging)         ← nettoyage & typage
+    ↓
+DBT (marts)           ← modélisation métier
+    ↓
+Streamlit Dashboard   ← visualisation KPI
 ```
 
 ---
 
 ## Stack technique
 
-| Outil                   | Rôle                                          |
-|-------------------------|-----------------------------------------------|
-| Python                  | Scripts d'ingestion                           |
-| BigQuery                | Entrepôt de données                           |
-| DBT                     | Modélisation et tests de qualité des données  |
-| Streamlit               | Dashboard de visualisation                    |
-| Docker / Docker Compose | Conteneurisation et orchestration des services|
-| GitHub Actions          | CI/CD                                         |
+| Outil | Rôle |
+|---|---|
+| Python 3.12 | Ingestion et scripts |
+| BigQuery (GCP) | Entrepôt de données |
+| DBT Core | Transformation & tests qualité |
+| Streamlit | Dashboard interactif |
+| Docker & Docker Compose | Conteneurisation |
+| GitHub Actions | CI/CD |
 
 ---
 
-## Avancement & Roadmap
+## Pipeline de données
 
-| Composant | État |
-| --- | --- |
-| Ingestion CSV → BigQuery (Python) | ✅ Fonctionnel |
-| Modélisation DBT (staging → marts) + tests qualité | 🔜 À venir |
-| Dashboard Streamlit | 🔜 À venir |
-| Conteneurisation Docker Compose complète | 🔜 À venir |
-| CI/CD GitHub Actions | 🔜 À venir |
+### 1. Ingestion
+
+- Chargement automatisé des fichiers CSV vers BigQuery
+- Gestion des erreurs et logs structurés
+- Pipeline modulaire et scalable
+
+### 2. Transformation (DBT)
+
+- **Staging** : nettoyage et correction des types
+- **Marts** : modélisation orientée métier
+
+Tables produites :
+
+| Table | Description |
+|---|---|
+| `fct_orders` | Faits commandes |
+| `dim_customers` | Dimension clients |
+| `dim_products` | Dimension produits |
+
+### 3. KPI métier
+
+| KPI | Description |
+|---|---|
+| Chiffre d'affaires (CA) | Revenu total généré |
+| Nombre de commandes | Volume d'activité |
+| Nombre de clients | Base clients active |
+
+---
+
+## Dashboard
+
+Dashboard Streamlit connecté à BigQuery :
+
+- Filtres interactifs par période
+- Visualisation temporelle des KPI
+- Métriques clés : CA, commandes, clients actifs
+
+---
+
+## Insights métier
+
+- Analyse de la croissance du chiffre d'affaires
+- Identification des tendances de ventes
+- Évolution du nombre de clients actifs
+- Base analytique pour la segmentation produit et client
 
 ---
 
@@ -69,64 +108,69 @@ Ingestion Python  ──────────────►  BigQuery (raw)
 - Un projet GCP avec BigQuery activé
 - Une clé de service account GCP au format JSON
 
-### 1. Cloner le projet
+### Variables d'environnement
 
-```bash
-git clone <url-du-repo>
-cd RetailFlow-Analytics-Platform
+Créer un fichier `.env` à la racine :
+
+```env
+GCP_PROJECT_ID=your_project_id
+DATASET=ecommerce_staging
+GOOGLE_APPLICATION_CREDENTIALS=/chemin/vers/votre-cle.json
 ```
 
-### 2. Configurer les credentials GCP
-
-Placer votre clé de service account en local (hors du repo, par exemple `~/.gcp/retailflow-sa.json`), puis exporter la variable d'environnement :
-
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/chemin/vers/votre-cle.json"
-```
-
-### 3. Lancer la plateforme avec Docker Compose
+### Lancer avec Docker
 
 ```bash
 docker compose up --build
 ```
 
-> **État actuel** : seul le service d'ingestion est pleinement fonctionnel. Les services DBT et Streamlit seront activés dans `docker-compose.yml` au fur et à mesure de leur implémentation.
+Accès au dashboard :
 
-### 4. Lancer l'ingestion manuellement (hors Docker)
+```
+http://localhost:8501
+```
+
+### Lancer en local (sans Docker)
 
 ```bash
 pip install -r requirements.txt
-python ingestion/load_to_bigquery.py
-```
-
-### 5. Lancer les tests de qualité DBT
-
-```bash
-cd dbt_project
-dbt test
+streamlit run streamlit_app/app.py
 ```
 
 ---
 
-## Structure du projet
+## CI/CD
 
-```text
-RetailFlow-Analytics-Platform/
-├── data/
-│   └── raw/                                       # fichiers CSV bruts
-├── ingestion/
-│   └── load_to_bigquery.py                        # pipeline ingestion v1
-├── docs/
-│   └── RetailFlow_Analytics_Platform_Backlog.pdf  # backlog agile
-├── dbt_project/                                   # transformation (à venir)
-├── streamlit_app/                                 # dashboard (à venir)
-├── requirements.txt
-└── README.md
-```
+- Tests automatisés à chaque push
+- Pipeline GitHub Actions
+- Badge CI dans le README
 
 ---
 
-## Dataset & Documentation
+## Améliorations futures
 
-- **Source des données** : [Olist Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
-- **Backlog produit** : [`docs/RetailFlow_Analytics_Platform_Backlog.pdf`](docs/RetailFlow_Analytics_Platform_Backlog.pdf)
+| Amélioration | Horizon |
+|---|---|
+| CA mensuel | Court terme |
+| Top produits | Court terme |
+| Répartition géographique | Moyen terme |
+| Panier moyen | Moyen terme |
+| UI avancée | Long terme |
+
+---
+
+## Conclusion
+
+Ce projet démontre comment des données e-commerce brutes peuvent être transformées en indicateurs métier actionnables grâce à des outils modernes de data engineering.
+
+---
+
+## Licence
+
+MIT — voir [LICENSE](LICENSE)
+
+---
+
+## Auteur
+
+**Bienvenu MAKEDIKA MAKUALA**
