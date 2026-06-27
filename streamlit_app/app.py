@@ -5,7 +5,7 @@ import pandas as pd
 import os
 import datetime
 from dotenv import load_dotenv
-from streamlit_app.bigquery_client import run_query
+from bigquery_client import run_query
 
 # config
 
