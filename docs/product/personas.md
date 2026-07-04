@@ -1,6 +1,6 @@
 # Personas
 
-## E-commerce Manager
+## Responsable e-commerce
 
 ### Responsabilités
 
@@ -15,7 +15,7 @@
 
 ---
 
-## Marketing Analyst
+## Data Analyst
 
 ### Responsabilités
 
