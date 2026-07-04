@@ -1,184 +1,91 @@
 # RetailFlow Analytics Platform
 
-[![CI](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml)
-
-
 ## Présentation
 
-RetailFlow Analytics Platform est une plateforme data complète permettant d'ingérer, transformer et analyser des données e-commerce afin de produire des indicateurs métier exploitables.
+RetailFlow Analytics Platform est une plateforme de données conçue pour transformer des données e-commerce brutes en indicateurs fiables et exploitables afin d'améliorer la prise de décision commerciale.
 
-Le projet suit une architecture moderne de type ELT :
+Le projet met en œuvre une architecture moderne de type ELT permettant d'ingérer, transformer et visualiser des données issues d'une activité de commerce électronique.
 
-- **Ingestion** : Python → BigQuery
-- **Transformation** : DBT (staging & marts)
-- **Visualisation** : Streamlit
-- **Orchestration & Déploiement** : Docker
+RetailFlow couvre l'ensemble du cycle de vie de la donnée :
+
+- ingestion automatisée des données
+- stockage analytique
+- transformation métier
+- production de KPI
+- visualisation décisionnelle
+- industrialisation via Docker
+
+---
+
+## Contexte
+
+Les entreprises e-commerce génèrent quotidiennement de grandes quantités de données : commandes, clients, produits, paiements, livraisons. Bien que ces données soient disponibles, elles restent souvent dispersées dans plusieurs fichiers ou systèmes techniques.
+
+Cette situation entraîne :
+
+- une faible visibilité sur les performances
+- des analyses manuelles répétitives
+- des délais dans la production des rapports
+- des difficultés à produire des indicateurs fiables
+
+RetailFlow est né de la volonté de reproduire un cas réel rencontré dans l'univers e-commerce. Le projet s'appuie sur le jeu de données public **Olist** (Kaggle), représentant l'activité d'une marketplace brésilienne. L'objectif n'était pas uniquement d'analyser les données, mais de construire une plateforme Data Engineering complète permettant l'automatisation de l'ingestion, la standardisation des transformations, la production d'indicateurs métier et la visualisation des performances commerciales.
+
+---
+
+## Vision
+
+Transformer les données e-commerce en intelligence commerciale afin d'accélérer la prise de décision.
+
+---
+
+## Valeur métier
+
+### Visibilité
+
+Obtenir une vision consolidée des ventes et des revenus.
+
+### Fiabilité
+
+Garantir des indicateurs cohérents et reproductibles.
+
+### Automatisation
+
+Réduire les manipulations manuelles.
+
+### Décision
+
+Faciliter l'identification des tendances et opportunités commerciales.
 
 ---
 
 ## Architecture
 
 ```
-CSV (Olist)
-    ↓
-Ingestion Python
-    ↓
-BigQuery (raw)
-    ↓
-DBT (staging)
-    ↓
-DBT (marts)
-    ↓
-Streamlit Dashboard
+CSV (Olist)  →  Python Ingestion  →  Google BigQuery  →  DBT  →  Data Marts  →  Streamlit / Power BI  →  Décision métier
 ```
 
 ---
 
-## Stack technique
+## Technologies
 
-- Python 3.12
-- BigQuery (GCP)
-- DBT Core
+- Python
+- Google BigQuery
+- DBT
 - Streamlit
-- Docker & Docker Compose
-- GitHub Actions (CI/CD)
+- Docker
+- GitHub Actions
+- Power BI (roadmap)
 
 ---
 
-## Arborescence du projet
+## Principaux KPI
 
-```
-RetailFlow-Analytics-Platform/
-├── data/
-│   └── raw/                    
-├── ingestion/
-│   └── load_to_bigquery.py     
-├── dbt_project/
-│   └── models/
-│        └── staging/
-│        └── marts/
-├── tests/
-│   └── test_ingestion.py
-├── streamlit_app/  
-│   └── app.py
-│   └── bigquery_client.py
-│   └── Dockerfile
-├── docs/
-│   └── RetailFlow_Analytics_Platform_Backlog.pdf
-├── .github/
-│   └── workflow
-│       └── ci.yml              
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
-```
-
----
-
-## Pipeline de données
-
-### Ingestion
-
-- Chargement automatisé des fichiers CSV
-- Gestion des erreurs et logs
-- Pipeline modulaire et scalable
-
-### Transformation (DBT)
-
-- Nettoyage des données (staging)
-- Modélisation en tables métiers :
-  - `fct_orders`
-  - `dim_customers`
-  - `dim_products`
-
-### KPI métier
-
-- Chiffre d'affaires (CA)
+- Chiffre d'affaires
 - Nombre de commandes
 - Nombre de clients
-
----
-
-## Dashboard
-
-Fonctionnalités :
-
-- Filtres interactifs par date
-- KPI : commandes, clients, CA
-- Visualisation temporelle
-- Dashboard connecté à BigQuery
-
----
-
-## Insights business
-
-- Analyse de la croissance du chiffre d'affaires
-- Identification des tendances de ventes
-- Évolution du nombre de clients
-- Base pour analyse des produits et segmentation
-
----
-
-## Lancer avec Docker
-
-```bash
-docker compose up --build
-```
-
-Accès :
-
-```
-http://localhost:8501
-```
-
-### Variables d'environnement
-
-Créer un fichier `.env` :
-
-```env
-GCP_PROJECT_ID=your_project_id
-DATASET=ecommerce_staging
-GOOGLE_APPLICATION_CREDENTIALS=/chemin/vers/votre-cle.json
-```
-
-### Lancer en local (sans Docker)
-
-```bash
-pip install -r requirements.txt
-streamlit run streamlit_app/app.py
-```
-
----
-
-## CI/CD
-
-- Tests automatisés
-- Pipeline GitHub Actions
-- Badge CI dans le README
-
----
-
-## Améliorations futures
-
-| Amélioration | Horizon |
-|---|---|
-| CA mensuel | Court terme |
-| Top produits | Court terme |
-| Répartition géographique | Moyen terme |
-| Panier moyen | Moyen terme |
-| UI avancée | Long terme |
-
----
-
-## Conclusion
-
-Ce projet démontre la capacité à construire une plateforme data complète allant de l'ingestion des données jusqu'à leur visualisation avec une approche orientée métier.
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE)
+- Panier moyen
+- Top produits
+- Performance géographique
 
 ---
 
