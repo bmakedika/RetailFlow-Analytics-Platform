@@ -1,5 +1,12 @@
 # RetailFlow Analytics Platform
 
+[![CI](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/bmakedika/RetailFlow-Analytics-Platform/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![BigQuery](https://img.shields.io/badge/BigQuery-GCP-4285F4)
+![DBT](https://img.shields.io/badge/DBT-Core-FF694B)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 ## Présentation
 
 RetailFlow Analytics Platform est une plateforme de données conçue pour transformer des données e-commerce brutes en indicateurs fiables et exploitables afin d'améliorer la prise de décision commerciale
