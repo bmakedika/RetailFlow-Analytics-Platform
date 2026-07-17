@@ -1,4 +1,4 @@
-# Documentation — RetailFlow Analytics Platform
+# Documentation - RetailFlow Analytics Platform
 
 Ce dossier contient l'ensemble de la documentation du projet, organisée en trois catégories.
 
@@ -21,7 +21,7 @@ Ce dossier contient l'ensemble de la documentation du projet, organisée en troi
 | [`product/personas.md`](product/personas.md) | Personas : profils utilisateurs et leurs objectifs |
 | [`product/kpi_catalog.md`](product/kpi_catalog.md) | Catalogue des KPIs : formules, tables sources et statut d'implémentation |
 | [`product/data_dictionary.md`](product/data_dictionary.md) | Data Dictionary : description des tables staging et marts |
-| [`RetailFlow_Analytics_Platform_v0.5.pdf`](RetailFlow_Analytics_Platform_v0.5.pdf) | Product Backlog complet : EPICs, user stories, sprints, architecture et roadmap |
+| [`RetailFlow_Analytics_Platform_v0.5.pdf`](RetailFlow_Analytics_Platform_v0.5.pdf?raw=true) | Product Backlog complet : EPICs, user stories, sprints, architecture et roadmap |
 
 ---
 
